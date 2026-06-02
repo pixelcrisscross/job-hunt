@@ -1,84 +1,566 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Candidate Workspace</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>NexusPort | Candidate Workspace</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        :root { --primary: #0f172a; --accent: #4f46e5; --accent-hover: #4338ca; --bg: #f8fafc; --card-bg: #ffffff; --text: #1e293b; --muted: #64748b; --border: #e2e8f0; }
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, sans-serif; }
-        body { background-color: var(--bg); color: var(--text); display: flex; min-height: 100vh; }
-        aside { width: 280px; background: var(--primary); color: #fff; padding: 2rem 1.5rem; display: flex; flex-direction: column; gap: 2rem; }
-        aside h2 { font-size: 1.25rem; color: #818cf8; font-weight: 700; }
-        .nav-links { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
-        .nav-links a { color: #cbd5e1; text-decoration: none; padding: 0.75rem 1rem; border-radius: 6px; display: block; }
-        .nav-links a.active { background: var(--accent); color: #fff; }
-        main { flex: 1; padding: 2.5rem 4rem; overflow-y: auto; }
-        .card { background: #fff; border: 1px solid var(--border); border-radius: 12px; padding: 1.75rem; margin-bottom: 2rem; }
-        .form-group { margin-bottom: 1.25rem; }
-        .form-group label { display: block; font-size: 0.875rem; font-weight: 600; margin-bottom: 0.5rem; }
-        .form-control { width: 100%; padding: 0.75rem; border: 1px solid var(--border); border-radius: 6px; font-size: 1rem; }
-        .skills-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; border: 1px solid var(--border); padding: 1rem; border-radius: 6px; }
-        button.btn { background: var(--accent); color: #fff; border: none; padding: 0.75rem 1.5rem; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 1rem; width: 100%; }
-        button.btn:hover { background: var(--accent-hover); }
-        .alert { padding: 0.75rem; border-radius: 6px; margin-bottom: 1.5rem; }
-        .alert-success { background: #dcfce7; color: #166534; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+            background: linear-gradient(125deg, #f0f4fa 0%, #e6edf4 100%);
+            color: #0a1c2f;
+            display: flex;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* SIDEBAR — Elegant glassmorphic deep tone */
+        aside {
+            width: 300px;
+            background: linear-gradient(180deg, #0f172a 0%, #0a0f1f 100%);
+            backdrop-filter: blur(2px);
+            color: #eef2ff;
+            padding: 2rem 1.8rem;
+            display: flex;
+            flex-direction: column;
+            gap: 2.2rem;
+            box-shadow: 14px 0 28px rgba(0, 0, 0, 0.08);
+            border-right: 1px solid rgba(255, 255, 255, 0.07);
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 1.6rem;
+        }
+
+        .brand-icon {
+            background: #4f46e5;
+            width: 44px;
+            height: 44px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            box-shadow: 0 12px 18px -8px rgba(79, 70, 229, 0.4);
+            transition: all 0.2s;
+        }
+
+        aside h2 {
+            font-size: 1.7rem;
+            font-weight: 700;
+            letter-spacing: -0.4px;
+            background: linear-gradient(120deg, #c7d2fe, #a5b4fc);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.7rem;
+        }
+
+        .nav-links a {
+            color: #cbd5e6;
+            text-decoration: none;
+            padding: 0.85rem 1rem;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            font-size: 0.95rem;
+        }
+
+        .nav-links a i {
+            width: 24px;
+            font-size: 1.1rem;
+            text-align: center;
+        }
+
+        .nav-links a.active {
+            background: #4f46e5;
+            color: white;
+            box-shadow: 0 8px 18px rgba(79, 70, 229, 0.25);
+        }
+
+        .nav-links a:not(.active):hover {
+            background: rgba(255, 255, 255, 0.08);
+            color: white;
+            transform: translateX(4px);
+        }
+
+        .profile-mini {
+            margin-top: auto;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 20px;
+            padding: 1rem;
+            font-size: 0.8rem;
+            border: 1px solid rgba(255,255,240,0.05);
+        }
+
+        /* MAIN CONTENT — clean, spacious, elevated */
+        main {
+            flex: 1;
+            padding: 2.4rem 3rem;
+            overflow-y: auto;
+            max-width: calc(100% - 300px);
+        }
+
+        /* header area */
+        .hero-header {
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .hero-header h1 {
+            font-size: 2.2rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            background: linear-gradient(to right, #0f2b3d, #1e3a5f);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .pill-info {
+            background: rgba(255,255,245,0.7);
+            backdrop-filter: blur(4px);
+            padding: 0.4rem 1.2rem;
+            border-radius: 60px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: #4f46e5;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.02);
+        }
+
+        /* main card — modern float */
+        .profile-card {
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(0px);
+            border-radius: 36px;
+            box-shadow: 0 25px 45px -18px rgba(0, 0, 0, 0.12), 0 1px 1px rgba(0,0,0,0.02);
+            padding: 2rem 2.2rem;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.7);
+            transition: transform 0.2s ease, box-shadow 0.2s;
+        }
+
+        .profile-card:hover {
+            box-shadow: 0 30px 50px -20px rgba(0, 0, 0, 0.16);
+        }
+
+        .card-header-custom {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 1.8rem;
+            border-bottom: 2px solid #eef2ff;
+            padding-bottom: 1rem;
+        }
+
+        .card-header-custom h2 {
+            font-size: 1.65rem;
+            font-weight: 700;
+            letter-spacing: -0.2px;
+        }
+
+        .card-header-custom i {
+            font-size: 1.7rem;
+            color: #4f46e5;
+            background: #eef2ff;
+            padding: 10px;
+            border-radius: 20px;
+        }
+
+        /* form styles — refined */
+        .form-group {
+            margin-bottom: 1.6rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 0.6rem;
+            color: #1e293b;
+            letter-spacing: -0.2px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .form-group label i {
+            color: #4f46e5;
+            font-size: 0.9rem;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.85rem 1rem;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 20px;
+            font-size: 0.95rem;
+            font-family: 'Inter', monospace;
+            transition: all 0.2s;
+            background: #ffffff;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #4f46e5;
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
+        }
+
+        /* skills grid — modern tag style */
+        .skills-section-title {
+            margin-bottom: 0.9rem;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 0.8rem;
+            background: #fefefe;
+            border-radius: 24px;
+            padding: 1.2rem;
+            border: 1px solid #eef2ff;
+            background: #fafcff;
+        }
+
+        .skill-check {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            background: white;
+            padding: 0.55rem 0.8rem;
+            border-radius: 60px;
+            transition: all 0.2s;
+            border: 1px solid #e2edf7;
+        }
+
+        .skill-check:hover {
+            background: #f5f3ff;
+            border-color: #c7d2fe;
+            transform: translateY(-1px);
+        }
+
+        .skill-check input {
+            width: 18px;
+            height: 18px;
+            accent-color: #4f46e5;
+            cursor: pointer;
+        }
+
+        button.btn {
+            background: #4f46e5;
+            color: white;
+            border: none;
+            padding: 0.9rem 1.8rem;
+            border-radius: 40px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 1rem;
+            width: 100%;
+            transition: all 0.25s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            box-shadow: 0 6px 14px rgba(79, 70, 229, 0.25);
+        }
+
+        button.btn:hover {
+            background: #3730a3;
+            transform: translateY(-2px);
+            box-shadow: 0 12px 20px -8px #4f46e570;
+        }
+
+        /* alert modern */
+        .alert {
+            padding: 1rem 1.2rem;
+            border-radius: 24px;
+            margin-bottom: 1.8rem;
+            font-size: 0.85rem;
+            font-weight: 500;
+            backdrop-filter: blur(4px);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-left: 4px solid;
+        }
+
+        .alert-success {
+            background: #e6f7ec;
+            color: #166534;
+            border-left-color: #2b9348;
+        }
+
+        .alert-error {
+            background: #fee9e6;
+            color: #b91c1c;
+            border-left-color: #e03a3a;
+        }
+
+        .text-muted {
+            color: #64748b;
+            font-size: 0.75rem;
+            margin-top: 0.3rem;
+        }
+
+        hr {
+            margin: 1rem 0;
+            border: none;
+            border-top: 1px solid #eef2ff;
+        }
+
+        @media (max-width: 780px) {
+            body {
+                flex-direction: column;
+            }
+            aside {
+                width: 100%;
+                height: auto;
+                position: relative;
+                padding: 1.2rem;
+                flex-direction: row;
+                flex-wrap: wrap;
+                align-items: center;
+                gap: 1rem;
+            }
+            .brand {
+                border-bottom: none;
+                padding-bottom: 0;
+            }
+            .nav-links {
+                flex-direction: row;
+                flex-wrap: wrap;
+                gap: 0.4rem;
+            }
+            .profile-mini {
+                display: none;
+            }
+            main {
+                max-width: 100%;
+                padding: 1.6rem;
+            }
+            .skills-grid {
+                grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            }
+        }
+
+        /* floating stats widget inside form */
+        .insight-badge {
+            background: #f1f5f9;
+            border-radius: 14px;
+            padding: 0.2rem 0.8rem;
+            font-size: 0.7rem;
+            font-weight: 500;
+        }
     </style>
 </head>
 <body>
     <aside>
-        <h2>Talent Portal</h2>
+        <div class="brand">
+            <div class="brand-icon"><i class="fas fa-rocket" style="color:white"></i></div>
+            <h2>NexusPort</h2>
+        </div>
         <ul class="nav-links">
-            <li><a href="#" class="active">My Profile & Skills</a></li>
-            <li><a href="/logout">Logout</a></li>
+            <li><a href="#" class="active"><i class="fas fa-id-card"></i> My Profile & Skills</a></li>
+            <li><a href="/logout"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
         </ul>
+        <div class="profile-mini">
+            <i class="fas fa-shield-alt"></i> secure candidate hub<br>
+            <span style="font-size:0.7rem;">visibility score active</span>
+        </div>
     </aside>
     <main>
-        <header style="margin-bottom: 2rem;">
-            <h1>Candidate Workspace Portal</h1>
-            <p style="color: var(--muted);">Keep your portfolio metrics and skill set updated to stay index-visible to recruiters</p>
-        </header>
+        <div class="hero-header">
+            <div>
+                <h1><i class="fas fa-bolt" style="color:#4f46e5; font-size: 2rem;"></i> Candidate Workspace</h1>
+                <p style="color: #475569; margin-top: 8px; font-weight: 500;">Keep your portfolio metrics & skill set updated — stay visible to top recruiters</p>
+            </div>
+            <div class="pill-info">
+                <i class="fas fa-chart-line"></i> AI‑ready profile
+            </div>
+        </div>
 
-        {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-                {% for category, message in messages %}
-                    <div class="alert alert-{{ category }}">{{ message }}</div>
-                {% endfor %}
-            {% endif %}
-        {% endwith %}
+        <!-- Flask flash messages with dynamic style -->
+        <div id="flashContainer">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}">
+                            <i class="fas {% if category == 'success' %}fa-check-circle fa-fw{% else %}fa-exclamation-triangle fa-fw{% endif %}"></i>
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+        </div>
 
-        <div class="card">
-            <h2>Manage Portfolio Details</h2>
-            <form action="/candidate/update" method="POST" style="margin-top: 1.5rem;">
+        <!-- Main Portfolio Card -->
+        <div class="profile-card">
+            <div class="card-header-custom">
+                <i class="fas fa-pen-fancy"></i>
+                <h2>Manage portfolio details</h2>
+            </div>
+            <form action="/candidate/update" method="POST" id="profileForm">
+                <!-- Full Name -->
                 <div class="form-group">
-                    <label>Full Name</label>
-                    <input type="text" name="name" class="form-control" value="{{ candidate.name }}" required>
+                    <label><i class="fas fa-user-astronaut"></i> Full name</label>
+                    <input type="text" name="name" class="form-control" value="{{ candidate.name }}" placeholder="e.g. Alex Morgan" required>
+                    <div class="text-muted"><i class="fas fa-info-circle"></i> This will appear on recruiter shortlists</div>
                 </div>
+
                 <div class="form-group">
-                    <label>Contact Phone Number</label>
-                    <input type="text" name="phone" class="form-control" value="{{ candidate.phone }}">
+                    <label><i class="fas fa-phone-alt"></i> Contact phone number</label>
+                    <input type="tel" name="phone" class="form-control" value="{{ candidate.phone }}" placeholder="+1 234 567 8900">
                 </div>
+
                 <div class="form-group">
-                    <label>Highest Qualification</label>
-                    <input type="text" name="qualification" class="form-control" value="{{ candidate.qualification }}" placeholder="e.g. B.Tech Computer Science">
+                    <label><i class="fas fa-graduation-cap"></i> Highest qualification</label>
+                    <input type="text" name="qualification" class="form-control" value="{{ candidate.qualification }}" placeholder="e.g. M.Sc. Data Science, B.Tech CSE">
                 </div>
+
                 <div class="form-group">
-                    <label>Years of Work Experience</label>
-                    <input type="number" step="0.1" name="experience" class="form-control" value="{{ candidate.experience }}">
+                    <label><i class="fas fa-briefcase"></i> Years of work experience</label>
+                    <input type="number" step="0.1" name="experience" class="form-control" value="{{ candidate.experience }}" placeholder="e.g. 4.5">
                 </div>
+
+                <!-- Skills grid with advanced layout -->
                 <div class="form-group">
-                    <label style="margin-bottom: 0.75rem;">Your Tech Stack Core Skills</label>
-                    <div class="skills-grid">
+                    <label style="margin-bottom: 0.5rem;"><i class="fas fa-cogs"></i> Your tech stack & core skills</label>
+                    <div class="skills-grid" id="skillsGrid">
                         {% for skill in all_skills %}
-                            <label style="display: flex; align-items: center; gap: 0.5rem; font-weight: normal; cursor: pointer;">
+                            <label class="skill-check">
                                 <input type="checkbox" name="skills" value="{{ skill.skill_id }}"
                                     {% if skill.skill_id in mapped_skills %} checked {% endif %}>
-                                {{ skill.skill_name }}
+                                <span><i class="fas fa-code-branch" style="font-size:0.75rem; color:#4f46e5;"></i> {{ skill.skill_name }}</span>
                             </label>
                         {% endfor %}
                     </div>
+                    <div class="text-muted" style="margin-top: 12px;">
+                        <i class="fas fa-lightbulb"></i> Select all relevant skills — improves matching algorithms.
+                    </div>
                 </div>
-                <button type="submit" class="btn">Update Portfolio Profile</button>
+
+                <button type="submit" class="btn">
+                    <i class="fas fa-save"></i> Update portfolio profile
+                </button>
             </form>
+            <hr>
+            <div style="display: flex; justify-content: flex-end; gap: 1rem; font-size: 0.7rem; color: #4b5563;">
+                <span><i class="far fa-clock"></i> Last sync: today</span>
+                <span><i class="fas fa-database"></i> Profile completeness ready</span>
+            </div>
+        </div>
+
+        <!-- extra helpful note card (modern tips) -->
+        <div style="background: #eef2ff30; border-radius: 24px; padding: 0.8rem 1.5rem; backdrop-filter: blur(2px); border: 1px solid #e2e8f0;">
+            <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                <i class="fas fa-chart-simple" style="color:#4f46e5; font-size:1.1rem;"></i>
+                <span style="font-size:0.8rem; font-weight:500;">✨ Pro tip: Regular profile updates increase recruiter discoverability by 43%.</span>
+            </div>
         </div>
     </main>
+
+    <script>
+        // Auto-hide flash messages after 4 seconds for better UX
+        setTimeout(() => {
+            const flashDiv = document.getElementById('flashContainer');
+            if(flashDiv) {
+                const alerts = flashDiv.querySelectorAll('.alert');
+                alerts.forEach(alert => {
+                    alert.style.transition = 'opacity 0.5s ease';
+                    alert.style.opacity = '0';
+                    setTimeout(() => {
+                        if(alert.parentNode) alert.remove();
+                    }, 500);
+                });
+            }
+        }, 4200);
+
+        // Add subtle interactive animation on skill checkbox counts (optional)
+        const checkboxes = document.querySelectorAll('input[name="skills"]');
+        const updateSkillCountHint = () => {
+            const selected = document.querySelectorAll('input[name="skills"]:checked').length;
+            const gridContainer = document.getElementById('skillsGrid');
+            let existingBadge = document.querySelector('.skill-counter-badge');
+            if(!existingBadge) {
+                const badge = document.createElement('div');
+                badge.className = 'skill-counter-badge insight-badge';
+                badge.style.marginTop = '8px';
+                badge.style.fontSize = '0.7rem';
+                badge.style.display = 'inline-block';
+                badge.style.background = '#eef2ff';
+                badge.style.padding = '0.2rem 0.8rem';
+                badge.style.borderRadius = '40px';
+                gridContainer.parentNode?.appendChild(badge);
+                existingBadge = document.querySelector('.skill-counter-badge');
+            }
+            if(existingBadge) {
+                existingBadge.innerHTML = `<i class="fas fa-check-circle"></i> ${selected} skill${selected !== 1 ? 's' : ''} selected`;
+            }
+        };
+        checkboxes.forEach(cb => cb.addEventListener('change', updateSkillCountHint));
+        updateSkillCountHint();
+
+        // Additional interactive live preview of experience year (nice UI touch)
+        const expInput = document.querySelector('input[name="experience"]');
+        if(expInput) {
+            const createExpHint = () => {
+                let expHint = document.querySelector('.exp-dynamic-hint');
+                if(!expHint && expInput.value) {
+                    const hintSpan = document.createElement('small');
+                    hintSpan.className = 'exp-dynamic-hint text-muted';
+                    hintSpan.style.display = 'block';
+                    hintSpan.style.marginTop = '0.25rem';
+                    expInput.parentNode.appendChild(hintSpan);
+                    expHint = hintSpan;
+                }
+                if(expHint) {
+                    const val = parseFloat(expInput.value);
+                    if(!isNaN(val) && val > 0) {
+                        expHint.innerHTML = `<i class="fas fa-chart-line"></i> ${val} year${val !== 1 ? 's' : ''} of experience — great profile strength.`;
+                    } else if(val === 0) {
+                        expHint.innerHTML = `<i class="fas fa-seedling"></i> Entry level — showcase projects to shine.`;
+                    } else {
+                        expHint.innerHTML = ``;
+                    }
+                }
+            };
+            expInput.addEventListener('input', createExpHint);
+            createExpHint();
+        }
+    </script>
 </body>
 </html>
