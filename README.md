@@ -1,5 +1,3 @@
-Here is a comprehensive, publication-quality `README.md` file designed for your project. This includes setup instructions, an architecture overview, and an examiner's evaluation guide to help you present this project for your academic evaluation.
-
 ***
 
 # Intelligent Candidate Skill Matching and Recruitment Analytics System
