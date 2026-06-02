@@ -1,49 +1,446 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>VTU Sign Up</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>VTU Nexus | Create Account</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
     <style>
-        :root { --primary: #0f172a; --accent: #4f46e5; --accent-hover: #4338ca; --bg: #f8fafc; --card-bg: #ffffff; --text: #1e293b; --muted: #64748b; --border: #e2e8f0; }
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, sans-serif; }
-        body { background-color: var(--bg); color: var(--text); height: 100vh; display: flex; align-items: center; justify-content: center; }
-        .auth-container { width: 100%; max-width: 450px; padding: 2.5rem; background: #fff; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.06); border: 1px solid var(--border); }
-        .form-group { margin-bottom: 1.25rem; }
-        .form-group label { display: block; font-size: 0.875rem; font-weight: 600; margin-bottom: 0.5rem; }
-        .form-control { width: 100%; padding: 0.75rem; border: 1px solid var(--border); border-radius: 6px; font-size: 1rem; }
-        button.btn { background: var(--accent); color: #fff; border: none; padding: 0.75rem 1.5rem; border-radius: 6px; cursor: pointer; font-weight: 600; width: 100%; }
-        button.btn:hover { background: var(--accent-hover); }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-dark: #0f172a;
+            --accent: #4f46e5;
+            --accent-hover: #4338ca;
+            --accent-glow: rgba(79, 70, 229, 0.2);
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --text: #1e293b;
+            --muted: #64748b;
+            --border: #e2e8f0;
+            --error-bg: #fef2f2;
+            --error-text: #b91c1c;
+            --success-bg: #ecfdf5;
+            --success-text: #065f46;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+            background: linear-gradient(125deg, #eef2ff 0%, #e0e7ff 40%, #f1f5f9 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+            position: relative;
+        }
+
+        /* animated background overlay */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 10% 30%, rgba(79, 70, 229, 0.05) 0%, transparent 60%),
+                        radial-gradient(circle at 90% 70%, rgba(79, 70, 229, 0.04) 0%, transparent 55%);
+            pointer-events: none;
+        }
+
+        .auth-container {
+            width: 100%;
+            max-width: 480px;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(0px);
+            border-radius: 36px;
+            box-shadow: 0 25px 45px -12px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.02);
+            padding: 2.5rem 2.2rem;
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            position: relative;
+            z-index: 2;
+        }
+
+        .auth-container:hover {
+            box-shadow: 0 30px 55px -18px rgba(0, 0, 0, 0.2);
+        }
+
+        .brand-header {
+            text-align: center;
+            margin-bottom: 1.8rem;
+        }
+
+        .logo-circle {
+            width: 65px;
+            height: 65px;
+            background: linear-gradient(145deg, #4f46e5, #6366f1);
+            border-radius: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            box-shadow: 0 15px 25px -8px rgba(79, 70, 229, 0.4);
+        }
+
+        .logo-circle i {
+            font-size: 2rem;
+            color: white;
+        }
+
+        .auth-container h2 {
+            font-size: 1.9rem;
+            font-weight: 800;
+            letter-spacing: -0.4px;
+            background: linear-gradient(120deg, #0f172a, #334155);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 0.5rem;
+        }
+
+        .welcome-sub {
+            color: var(--muted);
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        /* Form styling premium */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 0.6rem;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .form-group label i {
+            color: var(--accent);
+            font-size: 1rem;
+        }
+
+        .input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.9rem 1rem;
+            border: 1.5px solid var(--border);
+            border-radius: 20px;
+            font-size: 0.95rem;
+            font-family: 'Inter', monospace;
+            transition: all 0.2s ease;
+            background: #ffffff;
+            outline: none;
+        }
+
+        .form-control:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px var(--accent-glow);
+        }
+
+        select.form-control {
+            appearance: none;
+            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'></polyline></svg>");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            background-size: 1rem;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 14px;
+            background: transparent;
+            border: none;
+            color: var(--muted);
+            cursor: pointer;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            transition: color 0.2s;
+        }
+
+        .toggle-password:hover {
+            color: var(--accent);
+        }
+
+        button.btn {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 0.9rem 1.5rem;
+            border-radius: 40px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 1rem;
+            width: 100%;
+            transition: all 0.25s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            box-shadow: 0 6px 14px rgba(79, 70, 229, 0.3);
+            margin-top: 0.5rem;
+        }
+
+        button.btn:hover {
+            background: var(--accent-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 12px 20px -6px rgba(79, 70, 229, 0.45);
+        }
+
+        button.btn:active {
+            transform: translateY(1px);
+        }
+
+        /* role hint tooltip style */
+        .role-hint {
+            font-size: 0.7rem;
+            color: var(--muted);
+            margin-top: 0.3rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        /* alerts */
+        .alert {
+            padding: 0.9rem 1rem;
+            border-radius: 20px;
+            margin-bottom: 1.5rem;
+            font-size: 0.85rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            backdrop-filter: blur(2px);
+            border-left: 4px solid;
+        }
+
+        .alert-error {
+            background: var(--error-bg);
+            color: var(--error-text);
+            border-left-color: #ef4444;
+        }
+
+        .alert-success {
+            background: var(--success-bg);
+            color: var(--success-text);
+            border-left-color: #10b981;
+        }
+
+        .signin-link {
+            margin-top: 1.8rem;
+            text-align: center;
+            padding-top: 0.8rem;
+            border-top: 1px solid var(--border);
+            color: var(--muted);
+            font-size: 0.85rem;
+        }
+
+        .signin-link a {
+            color: var(--accent);
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .signin-link a:hover {
+            color: var(--accent-hover);
+            gap: 8px;
+        }
+
+        @media (max-width: 540px) {
+            .auth-container {
+                padding: 1.8rem 1.5rem;
+            }
+            .auth-container h2 {
+                font-size: 1.6rem;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="auth-container">
-        <h2 style="margin-bottom: 0.5rem; font-weight: 800; color: var(--primary);">Create Account</h2>
-        <p style="color: var(--muted); margin-bottom: 2rem;">Sign up and choose your workspace role</p>
+        <div class="brand-header">
+            <div class="logo-circle">
+                <i class="bi bi-person-plus-fill"></i>
+            </div>
+            <h2>Join VTU Nexus</h2>
+            <p class="welcome-sub">Launch your recruitment or candidate journey</p>
+        </div>
 
-        <form method="POST">
+        <!-- Flash Messages (for backend integration) -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category if category != 'error' else 'error' }}">
+                        <i class="{% if category == 'success' %}bi bi-check-circle-fill{% else %}bi bi-exclamation-triangle-fill{% endif %}"></i>
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <form method="POST" id="signupForm">
             <div class="form-group">
-                <label>Username</label>
-                <input type="text" name="username" class="form-control" required placeholder="Choose username">
+                <label><i class="bi bi-person-circle"></i> Username</label>
+                <input type="text" name="username" class="form-control" required placeholder="creative_handle or full_name" autocomplete="username">
             </div>
+
             <div class="form-group">
-                <label>Email Address</label>
-                <input type="email" name="email" class="form-control" required placeholder="name@vtu.edu">
+                <label><i class="bi bi-envelope-fill"></i> Email address</label>
+                <input type="email" name="email" class="form-control" required placeholder="name@vtu.edu" autocomplete="email">
             </div>
+
             <div class="form-group">
-                <label>Password</label>
-                <input type="password" name="password" class="form-control" required placeholder="Set strong password">
+                <label><i class="bi bi-key-fill"></i> Password</label>
+                <div class="input-wrapper">
+                    <input type="password" name="password" id="passwordField" class="form-control" required placeholder="Create a strong password" autocomplete="new-password">
+                    <button type="button" class="toggle-password" id="togglePasswordBtn" aria-label="Show password">
+                        <i class="bi bi-eye-slash"></i>
+                    </button>
+                </div>
+                <div class="role-hint"><i class="bi bi-info-circle"></i> Minimum 6 characters recommended</div>
             </div>
+
             <div class="form-group">
-                <label>Define Account Role</label>
-                <select name="role" class="form-control" required>
-                    <option value="candidate">Candidate (Self-Profile Manager)</option>
-                    <option value="recruiter">Recruiter (Pending Admin Approval)</option>
+                <label><i class="bi bi-briefcase-fill"></i> Workspace role</label>
+                <select name="role" class="form-control" required id="roleSelect">
+                    <option value="candidate">🎓 Candidate (Self-profile manager)</option>
+                    <option value="recruiter">🏢 Recruiter (Needs admin approval)</option>
                 </select>
+                <div class="role-hint" id="roleHint">
+                    <i class="bi bi-lightbulb"></i> <span>Candidates manage their portfolio & skills; Recruiters post jobs & match talent.</span>
+                </div>
             </div>
-            <button type="submit" class="btn">Register Profile</button>
+
+            <button type="submit" class="btn">
+                <i class="bi bi-check2-circle"></i> Register profile
+            </button>
         </form>
-        <p style="margin-top: 1.5rem; text-align: center; color: var(--muted); font-size: 0.9rem;">
-            Registered already? <a href="/login" style="color: var(--accent); font-weight: 600; text-decoration: none;">Sign In</a>
-        </p>
+
+        <div class="signin-link">
+            <span>Already have an account?</span>
+            <a href="/login">
+                Sign in <i class="bi bi-arrow-right-short"></i>
+            </a>
+        </div>
     </div>
+
+    <script>
+        (function() {
+            // Toggle password visibility
+            const toggleBtn = document.getElementById('togglePasswordBtn');
+            const passwordInput = document.getElementById('passwordField');
+            
+            if (toggleBtn && passwordInput) {
+                toggleBtn.addEventListener('click', function() {
+                    const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                    passwordInput.setAttribute('type', type);
+                    const icon = toggleBtn.querySelector('i');
+                    if (icon) {
+                        if (type === 'text') {
+                            icon.classList.remove('bi-eye-slash');
+                            icon.classList.add('bi-eye');
+                        } else {
+                            icon.classList.remove('bi-eye');
+                            icon.classList.add('bi-eye-slash');
+                        }
+                    }
+                });
+            }
+
+            // dynamic role hint update
+            const roleSelect = document.getElementById('roleSelect');
+            const hintSpan = document.querySelector('#roleHint span');
+            if (roleSelect && hintSpan) {
+                const updateHint = () => {
+                    const value = roleSelect.value;
+                    if (value === 'candidate') {
+                        hintSpan.innerHTML = '🎯 Candidates maintain their profile, skills & get discovered by recruiters.';
+                    } else {
+                        hintSpan.innerHTML = '🔍 Recruiters can post jobs, run skill matching analytics. Admin approval required.';
+                    }
+                };
+                roleSelect.addEventListener('change', updateHint);
+                updateHint();
+            }
+
+            // client-side validation & password strength suggestion
+            const signupForm = document.getElementById('signupForm');
+            if (signupForm) {
+                signupForm.addEventListener('submit', function(e) {
+                    const password = passwordInput.value;
+                    const email = document.querySelector('input[name="email"]').value;
+                    const username = document.querySelector('input[name="username"]').value;
+
+                    if (password.length < 6) {
+                        e.preventDefault();
+                        showTemporaryAlert('⚠️ Password must be at least 6 characters long.', 'error');
+                        return;
+                    }
+                    if (username.trim().length < 3) {
+                        e.preventDefault();
+                        showTemporaryAlert('👤 Username must be at least 3 characters.', 'error');
+                        return;
+                    }
+                    if (!email.includes('@') || !email.includes('.')) {
+                        e.preventDefault();
+                        showTemporaryAlert('📧 Please enter a valid email address.', 'error');
+                        return;
+                    }
+                });
+            }
+
+            function showTemporaryAlert(message, type) {
+                const container = document.querySelector('.auth-container');
+                const existingAlert = container.querySelector('.dynamic-alert');
+                if(existingAlert) existingAlert.remove();
+                
+                const alertDiv = document.createElement('div');
+                alertDiv.className = `alert alert-${type} dynamic-alert`;
+                alertDiv.style.marginBottom = '1rem';
+                alertDiv.innerHTML = `<i class="bi ${type === 'error' ? 'bi-exclamation-triangle-fill' : 'bi-info-circle-fill'}"></i> ${message}`;
+                const formEl = document.getElementById('signupForm');
+                formEl.parentNode.insertBefore(alertDiv, formEl);
+                setTimeout(() => {
+                    alertDiv.style.transition = 'opacity 0.4s';
+                    alertDiv.style.opacity = '0';
+                    setTimeout(() => alertDiv.remove(), 400);
+                }, 3500);
+            }
+
+            // Auto-remove flash messages after 4 secs (for backend flashed ones)
+            const serverAlerts = document.querySelectorAll('.alert:not(.dynamic-alert)');
+            if (serverAlerts.length) {
+                setTimeout(() => {
+                    serverAlerts.forEach(alert => {
+                        alert.style.transition = 'opacity 0.4s ease';
+                        alert.style.opacity = '0';
+                        setTimeout(() => alert.remove(), 400);
+                    });
+                }, 4000);
+            }
+        })();
+    </script>
 </body>
 </html>
