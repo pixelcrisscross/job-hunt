@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Admin Panel</title>
+    <style>
+        :root { --primary: #0f172a; --accent: #4f46e5; --accent-hover: #4338ca; --bg: #f8fafc; --card-bg: #ffffff; --text: #1e293b; --muted: #64748b; --border: #e2e8f0; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, sans-serif; }
+        body { background-color: var(--bg); color: var(--text); display: flex; min-height: 100vh; }
+        aside { width: 280px; background: var(--primary); color: #fff; padding: 2rem 1.5rem; display: flex; flex-direction: column; gap: 2rem; }
+        aside h2 { font-size: 1.25rem; color: #818cf8; font-weight: 700; }
+        .nav-links { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
+        .nav-links a { color: #cbd5e1; text-decoration: none; padding: 0.75rem 1rem; border-radius: 6px; display: block; }
+        .nav-links a.active { background: var(--accent); color: #fff; }
+        main { flex: 1; padding: 2.5rem 4rem; overflow-y: auto; }
+        .card { background: #fff; border: 1px solid var(--border); border-radius: 12px; padding: 1.75rem; margin-bottom: 2rem; }
+        table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
+        th, td { text-align: left; padding: 0.85rem 1rem; border-bottom: 1px solid var(--border); }
+        th { background-color: #f1f5f9; font-weight: 600; }
+        .btn-sm { padding: 0.35rem 0.75rem; border: none; border-radius: 4px; font-weight: 600; cursor: pointer; }
+        .btn-approve { background: #bbf7d0; color: #166534; }
+        .btn-reject { background: #fee2e2; color: #991b1b; }
+        .alert { padding: 0.75rem; border-radius: 6px; margin-bottom: 1.5rem; font-size: 0.9rem; }
+        .alert-success { background: #dcfce7; color: #166534; }
+    </style>
+</head>
+<body>
+    <aside>
+        <h2>Admin Panel</h2>
+        <ul class="nav-links">
+            <li><a href="#" class="active">Approvals & Users</a></li>
+            <li><a href="/recruiter">Switch to Recruiter ATS</a></li>
+            <li><a href="/logout">Logout</a></li>
+        </ul>
+    </aside>
+    <main>
+        <header style="margin-bottom: 2rem;">
+            <h1>Administration Center</h1>
+            <p style="color: var(--muted);">Manage recruiter authorization requests and inspect structural updates</p>
+        </header>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <!-- Pending Approvals -->
+        <div class="card">
+            <h2>Pending Registrations Approval Requests</h2>
+            {% if not pending %}
+                <p style="color: var(--muted); margin-top: 1rem;">No recruiter access requests waiting for approval.</p>
+            {% else %}
+                <table>
+                    <thead>
+                        <tr>
+                            <th>User ID</th>
+                            <th>Username</th>
+                            <th>Email</th>
+                            <th>Role Target</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for user in pending %}
+                            <tr>
+                                <td>{{ user.user_id }}</td>
+                                <td><strong>{{ user.username }}</strong></td>
+                                <td>{{ user.email }}</td>
+                                <td><span style="text-transform: capitalize; color: var(--accent);">{{ user.role }}</span></td>
+                                <td>
+                                    <form action="/admin/approve/{{ user.user_id }}" method="POST" style="display:inline;">
+                                        <button type="submit" class="btn-sm btn-approve">Approve</button>
+                                    </form>
+                                    <form action="/admin/reject/{{ user.user_id }}" method="POST" style="display:inline;">
+                                        <button type="submit" class="btn-sm btn-reject">Reject</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% endif %}
+        </div>
+
+        <!-- Audit Log Entries -->
+        <div class="card">
+            <h2>Audit Logs (Candidate Profiles Mod History)</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Log ID</th>
+                        <th>Cand ID</th>
+                        <th>Old Name Reference</th>
+                        <th>New Name Reference</th>
+                        <th>Timestamp</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for log in audit_logs %}
+                        <tr>
+                            <td>#{{ log.audit_id }}</td>
+                            <td>{{ log.candidate_id }}</td>
+                            <td><del>{{ log.old_name }}</del></td>
+                            <td><strong>{{ log.new_name }}</strong></td>
+                            <td>{{ log.changed_at }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </main>
+</body>
+</html>
